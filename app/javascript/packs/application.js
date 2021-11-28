@@ -17,3 +17,5 @@ require("../stylesheets/application.scss")
 Rails.start()
 Turbolinks.start()
 ActiveStorage.start()
+
+// config.assets.precompile += ['listings/index.js']

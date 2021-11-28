@@ -3,4 +3,10 @@ Rails.application.routes.draw do
 
   get '/', to: 'home#index'
   
+  resources :listings, only: [:new] do
+    collection do 
+      get 'display_token'
+    end
+  end
+
 end

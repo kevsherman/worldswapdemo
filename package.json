@@ -2,6 +2,8 @@
   "name": "worldswap",
   "private": true,
   "dependencies": {
+    "@metamask/onboarding": "^1.0.1",
+    "@openzeppelin/contracts": "^4.3.3",
     "@popperjs/core": "^2.10.2",
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
