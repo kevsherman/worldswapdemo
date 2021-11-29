@@ -1,1 +1,2 @@
-document.querySelector('.tokenList').insertAdjacentHTML("beforeend", "<%= j (render partial: 'listings/display_token', locals: params) %>")
+document.querySelector('.tokenList').insertAdjacentHTML("beforeend", "<%= j (render partial: 'listings/display_token', locals: params) %>");
+var results = {"buttonSelector":".createListingButton<%=params['symbol']%><%=params['id'] %>", "priceSelector":"#listing-price-input<%=params['symbol']%><%=params['id'] %>", "id": <%=params['id']%>}
