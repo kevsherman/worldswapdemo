@@ -1,6 +1,6 @@
 const abiSet = { 
   'WorldSwapToken': {
-    contractAddress: '0x321Bfd7f9C9579cC62c1f58dCF36EaAe77eFb5Ad',
+    contractAddress: '0x2E7124bB3c23Dae6700Cdf0559956A2b6893A4D2',
     abi: [
       {
         "inputs": [],
@@ -117,7 +117,8 @@ const abiSet = {
           }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
         "inputs": [
@@ -136,7 +137,8 @@ const abiSet = {
           }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
         "inputs": [
@@ -160,7 +162,8 @@ const abiSet = {
           }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
         "inputs": [],
@@ -173,7 +176,8 @@ const abiSet = {
           }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
         "inputs": [
@@ -192,7 +196,8 @@ const abiSet = {
           }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
         "inputs": [
@@ -274,7 +279,8 @@ const abiSet = {
           }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
         "inputs": [
@@ -293,7 +299,8 @@ const abiSet = {
           }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
         "inputs": [
@@ -317,7 +324,8 @@ const abiSet = {
           }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
         "inputs": [],
@@ -330,7 +338,8 @@ const abiSet = {
           }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
         "inputs": [
@@ -396,7 +405,8 @@ const abiSet = {
           }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       },
       {
         "inputs": [
@@ -415,12 +425,13 @@ const abiSet = {
           }
         ],
         "stateMutability": "view",
-        "type": "function"
+        "type": "function",
+        "constant": true
       }
     ]
   },
   "MetaMarket": {
-    contractAddress: "0x9A7A530871AcB8ADa291E0e9A0d532a93D6a4854",
+    contractAddress: "0xacEbeD294046170F20808adFDDc17584d0323c99",
     abi: [
       {
         "inputs": [],
@@ -498,6 +509,11 @@ const abiSet = {
             "internalType": "address",
             "name": "tokenContractAddress",
             "type": "address"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tokenContractId",
+            "type": "uint256"
           },
           {
             "internalType": "uint256",

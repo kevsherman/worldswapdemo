@@ -1,12 +1,19 @@
 class ListingsController < ApplicationController
-  def new
-    
-  end
+  
+  def index; end
+  
+  def new; end
 
-  def display_token
+  ### Ajax Methods ###
+  def display_token_to_list
     respond_to do |f|
       f.js
     end
   end
 
+  def display_token_for_sale
+    respond_to do |f|
+      f.js
+    end
+  end
 end
