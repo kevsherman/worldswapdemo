@@ -16,12 +16,13 @@ $(function() {
   const GetUserTokens = async () => {
     //import ABI and contractAddress for each supported token (currently only WorldSwapToken)
     //In the future, loop through all supported tokens and check wallet for existance
-    let accounts = await web3.eth.getAccounts();
-    let balance = await contract.methods.balanceOf(accounts[0]).call()
+    // let accounts = await web3.eth.getAccounts();
+    let account = await ethereum.selectedAddress;
+    let balance = await contract.methods.balanceOf(account).call()
     
     // Loop through the tokens for the account and ...
     for(var i = 0; i < Number(balance); i++) {
-      let id = await contract.methods.tokenOfOwnerByIndex(accounts[0], i).call();
+      let id = await contract.methods.tokenOfOwnerByIndex(account, i).call();
       let name = await contract.methods.name().call();
       let symbol = await contract.methods.symbol().call();
       let owner = await contract.methods.ownerOf(id).call();
@@ -64,11 +65,12 @@ async function createListing() {
   let price = Number(document.querySelector(priceField).value);
 
   // Approve the metamarket contract as a transfer agent for the NFT
-  let accounts = await web3.eth.getAccounts();
-  let approval = await contract.methods.approve(metaMarketContract._address, tokenId).send({from: accounts[0]});
+  // let accounts = await web3.eth.getAccounts();
+  let account = await ethereum.selectedAddress;
+  await contract.methods.approve(metaMarketContract._address, tokenId).send({from: account});
 
   //Create the listing
-  let result = await metaMarketContract.methods.createListing(abiSet[contractName].contractAddress, tokenId, price).send({from: accounts[0], gas: 1000000})
+  let result = await metaMarketContract.methods.createListing(abiSet[contractName].contractAddress, tokenId, price).send({from: account, gas: 1000000})
     .on('receipt', function(receipt){
       console.log(receipt);
       //redirect to listings index
@@ -77,8 +79,4 @@ async function createListing() {
     .on('error', function(error, receipt) {
       alert(error);
     });
-
-  //if success redirect to /index 
-  //if failure display failure message
-
 };
