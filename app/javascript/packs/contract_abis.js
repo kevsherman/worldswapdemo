@@ -1,6 +1,6 @@
 const abiSet = { 
   'WorldSwapToken': {
-    contractAddress: '0x2E7124bB3c23Dae6700Cdf0559956A2b6893A4D2',
+    contractAddress: '0x3F9210215ae6A886e6aB5d8AF8e2D91Fa4844392',
     abi: [
       {
         "inputs": [],
@@ -431,7 +431,7 @@ const abiSet = {
     ]
   },
   "MetaMarket": {
-    contractAddress: "0xacEbeD294046170F20808adFDDc17584d0323c99",
+    contractAddress: "0x28842b54dFB29bDCe18a334130c441924D66b248",
     abi: [
       {
         "inputs": [],

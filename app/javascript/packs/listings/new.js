@@ -1,8 +1,8 @@
-//ToDo: Ensure wallet connected, etc
-
-const forwarderOrigin = 'http://127.0.0.1:7545'; //set local/testnet/mainnet connection
-const web3 = new Web3(forwarderOrigin);
+// const forwarderOrigin = "https://ropsten.infura.io/v3/78937ec9f4a346f6b68eefe92739eec5"; //set local/testnet/mainnet connection
+// const web3 = new Web3(new Web3.providers.HttpProvider(forwarderOrigin));
+const web3 = new Web3(window.ethereum) 
 const abiSet = require('../contract_abis');
+web3.eth.Contract.handleRevert = true;
 
 //token contract
 const abi = abiSet['WorldSwapToken'].abi
@@ -14,11 +14,10 @@ const metaMarketContract = new web3.eth.Contract(abiSet['MetaMarket'].abi, abiSe
 
 $(function() {
   const GetUserTokens = async () => {
-    //import ABI and contractAddress for each supported token (currently only WorldSwapToken)
-    //In the future, loop through all supported tokens and check wallet for existance
-    // let accounts = await web3.eth.getAccounts();
+    // Import ABI and contractAddress for each supported token (currently only WorldSwapToken)
+    // In the future, loop through all supported tokens and check wallet for existance
     let account = await ethereum.selectedAddress;
-    let balance = await contract.methods.balanceOf(account).call()
+    let balance = await contract.methods.balanceOf(account).call();
     
     // Loop through the tokens for the account and ...
     for(var i = 0; i < Number(balance); i++) {
@@ -27,7 +26,7 @@ $(function() {
       let symbol = await contract.methods.symbol().call();
       let owner = await contract.methods.ownerOf(id).call();
       
-      let data = {id: id, name: name, symbol: symbol, owner: owner}
+      let data = {id: id, name: name, symbol: symbol, owner: owner};
       console.log(data);
 
       // Build a row for each result with the token details built from the metadata
@@ -40,7 +39,6 @@ $(function() {
         success: function(data, textStatus, jqXHR){},
         error: function(jqXHR, textStatus, errorThrown){console.log(errorThrown)}
       });
-
       bindCreateButton(response);
     }    
   }
@@ -65,16 +63,16 @@ async function createListing() {
   let price = Number(document.querySelector(priceField).value);
 
   // Approve the metamarket contract as a transfer agent for the NFT
-  // let accounts = await web3.eth.getAccounts();
   let account = await ethereum.selectedAddress;
-  await contract.methods.approve(metaMarketContract._address, tokenId).send({from: account});
+  console.log(account);
+ 
+  await contract.methods.approve(metaMarketContract._address, tokenId).send({from: account, gas: 1000000}).then(console.log);
 
   //Create the listing
   let result = await metaMarketContract.methods.createListing(abiSet[contractName].contractAddress, tokenId, price).send({from: account, gas: 1000000})
     .on('receipt', function(receipt){
       console.log(receipt);
-      //redirect to listings index
-      window.location.replace("/listings");
+      window.location.replace("/listings"); //redirect to listings index
     })
     .on('error', function(error, receipt) {
       alert(error);

@@ -1,13 +1,21 @@
 import MetaMaskOnboarding from "@metamask/onboarding"
+//token contract
+const abiSet = require('./contract_abis');
+const abi = abiSet['WorldSwapToken'].abi
+const contractAddress = abiSet['WorldSwapToken'].contractAddress
+
 
 $(function() {
   console.log( "ready!" );
+  const { ethereum } = window;  //Destructuring assignment: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const
+  const web3 = new Web3(ethereum) 
+  const contract = new web3.eth.Contract(abi, contractAddress); 
 
-  const forwarderOrigin = 'http://127.0.0.1:7545';
-  const onboarding = new MetaMaskOnboarding({ forwarderOrigin }); //We create a new MetaMask onboarding object to use in our app
+  // const forwarderOrigin = 'http://127.0.0.1:7545';
+  // const onboarding = new MetaMaskOnboarding({ forwarderOrigin }); //We create a new MetaMask onboarding object to use in our app
+  const onboarding = new MetaMaskOnboarding();
   const connectButton = document.querySelector('.connectMetamask');  // Add event listener to 'Connect Metamask' button
-  let { ethereum } = window;  //Destructuring assignment: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const
-
+  
   //Check if the Metamask extension is installed:
   const isMetaMaskInstalled = () => {
     //Have to check the ethereum binding on the window object to see if it's installed
@@ -36,7 +44,6 @@ $(function() {
 
   //Now we check to see if MetaMask is installed:
   const MetaMaskClientCheck = () => {
-    // debugger;
     if (!isMetaMaskInstalled()) {
       connectButton.innerText = 'Click here to install MetaMask!'; //If it isn't installed we ask the user to click to install it
       connectButton.onclick = onClickInstall; //When the button is clicked we call this function
@@ -51,17 +58,11 @@ $(function() {
     }
   };
   MetaMaskClientCheck();
+
+  const onClickSwapToken = () => {
+    contract.methods.awardToken(ethereum.selectedAddress, 'sometesturl').send({from: ethereum.selectedAddress}).then(console.log);
+  }
+  
+  const getSwapTokenButton = document.querySelector('.getSwapToken');
+  getSwapTokenButton.onclick = onClickSwapToken;
 });
-
-
-// DONE 1. detect the presence of MetaMask, 
-// DONE 2. connect to the current account, 
-
-// x. select asset from metamask wallet to sell
-// https://blog.etereo.io/how-to-read-the-balance-of-your-metamask-wallet-with-web3-js-6d4c4c364225
-
-
-// 3. display information from your smart contract, 
-// 4. submit a transaction to your contract, 
-// 5. monitor the state of the transaction, 
-// 6. and update the frontend interface
