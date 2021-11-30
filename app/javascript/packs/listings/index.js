@@ -9,7 +9,8 @@ const metaMarketContract = new web3.eth.Contract(abiSet['MetaMarket'].abi, abiSe
 $(function() {
   const GetListedTokens = async () => {
     // pull the list of all tokens from the MetaMarket account
-    let account = await ethereum.selectedAddress;
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    let account = await window.ethereum.selectedAddress;
     let totalListings = await metaMarketContract.methods.totalListings().call();
     
     // Loop through the tokens for the account and ...
