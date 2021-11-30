@@ -1,24 +1,17 @@
 import MetaMaskOnboarding from "@metamask/onboarding"
-//token contract
-const abiSet = require('./contract_abis');
-const abi = abiSet['WorldSwapToken'].abi
-const contractAddress = abiSet['WorldSwapToken'].contractAddress
-
 
 $(function() {
   console.log( "ready!" );
-  const { ethereum } = window;  //Destructuring assignment: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const
-  const web3 = new Web3(ethereum) 
-  const contract = new web3.eth.Contract(abi, contractAddress); 
-
   // const forwarderOrigin = 'http://127.0.0.1:7545';
   // const onboarding = new MetaMaskOnboarding({ forwarderOrigin }); //We create a new MetaMask onboarding object to use in our app
   const onboarding = new MetaMaskOnboarding();
   const connectButton = document.querySelector('.connectMetamask');  // Add event listener to 'Connect Metamask' button
-  
+  const { ethereum } = window;  //Destructuring assignment: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const
+
+
   //Check if the Metamask extension is installed:
   const isMetaMaskInstalled = () => {
-    //Have to check the ethereum binding on the window object to see if it's installed
+    //Have to check the ethereum binding on the window object to see if it's installed 
     return Boolean(ethereum && ethereum.isMetaMask);
   };
 
@@ -43,12 +36,13 @@ $(function() {
   };
 
   //Now we check to see if MetaMask is installed:
-  const MetaMaskClientCheck = () => {
+  const MetaMaskClientCheck = async () => {
+    let accounts = await ethereum.request({ method: 'eth_requestAccounts' });
     if (!isMetaMaskInstalled()) {
       connectButton.innerText = 'Click here to install MetaMask!'; //If it isn't installed we ask the user to click to install it
       connectButton.onclick = onClickInstall; //When the button is clicked we call this function
       connectButton.disabled = false; //The button is now disabled
-    } else if (!ethereum.selectedAddress){
+    } else if (!accounts){
       connectButton.innerText = 'Connect'; //If it is installed we change our button text      
       connectButton.onclick = onClickConnect; //When the button is clicked we call this function to connect the users MetaMask Wallet      
       connectButton.disabled = false; //The button is now disabled
@@ -59,10 +53,23 @@ $(function() {
   };
   MetaMaskClientCheck();
 
-  const onClickSwapToken = () => {
-    contract.methods.awardToken(ethereum.selectedAddress, 'sometesturl').send({from: ethereum.selectedAddress}).then(console.log);
+
+  //Support for issuing test $SWAP tokens
+  //token contract
+  const abiSet = require('./contract_abis');
+  const abi = abiSet['WorldSwapToken'].abi
+  const contractAddress = abiSet['WorldSwapToken'].contractAddress
+
+  const web3 = new Web3(ethereum) 
+  const contract = new web3.eth.Contract(abi, contractAddress); 
+
+  const onClickSwapToken = async () => {
+    console.log('New $SWAP token being isssued...');
+    await contract.methods.awardToken(ethereum.selectedAddress, 'sometesturl').send({from: ethereum.selectedAddress}).then(console.log);
+    console.log('Token issuance successful!');
   }
   
   const getSwapTokenButton = document.querySelector('.getSwapToken');
   getSwapTokenButton.onclick = onClickSwapToken;
 });
+

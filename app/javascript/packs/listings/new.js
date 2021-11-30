@@ -2,7 +2,6 @@
 // const web3 = new Web3(new Web3.providers.HttpProvider(forwarderOrigin));
 const web3 = new Web3(window.ethereum) 
 const abiSet = require('../contract_abis');
-web3.eth.Contract.handleRevert = true;
 
 //token contract
 const abi = abiSet['WorldSwapToken'].abi
@@ -16,7 +15,8 @@ $(function() {
   const GetUserTokens = async () => {
     // Import ABI and contractAddress for each supported token (currently only WorldSwapToken)
     // In the future, loop through all supported tokens and check wallet for existance
-    let account = await ethereum.selectedAddress;
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    let account = await window.ethereum.selectedAddress;
     let balance = await contract.methods.balanceOf(account).call();
     
     // Loop through the tokens for the account and ...
@@ -63,12 +63,14 @@ async function createListing() {
   let price = Number(document.querySelector(priceField).value);
 
   // Approve the metamarket contract as a transfer agent for the NFT
-  let account = await ethereum.selectedAddress;
+  let account = await window.ethereum.selectedAddress;
   console.log(account);
  
+  console.log('processing approval...');
   await contract.methods.approve(metaMarketContract._address, tokenId).send({from: account, gas: 1000000}).then(console.log);
 
   //Create the listing
+  console.log('creating the listing - will be redirected on success...');
   let result = await metaMarketContract.methods.createListing(abiSet[contractName].contractAddress, tokenId, price).send({from: account, gas: 1000000})
     .on('receipt', function(receipt){
       console.log(receipt);
